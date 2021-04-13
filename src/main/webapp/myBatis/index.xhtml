@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+<h:head/>
+<h:body>
+    <h1>MyBatis</h1>
+    <h2>Cars:</h2>
+    <ol>
+        <ui:repeat value="#{carsMyBatis.allCars}" var="car">
+            <li>
+                <h:link value="#{car.numberplate}" outcome="car?carId=#{car.id}" />:
+                #{car.name}
+            </li>
+        </ui:repeat>
+    </ol>
+    <h:form>
+        <label for="numberplate">Numberplate: </label>
+        <h:inputText id="numberplate" value="#{carsMyBatis.carToCreate.numberplate}" required="true" />
+        <br/>
+        <label for="name">Name: </label>
+        <h:inputText id="name" value="#{carsMyBatis.carToCreate.name}" required="true" />
+        <br/>
+        <h:commandButton value="Add new car" action="#{carsMyBatis.createCar}" />
+    </h:form>
+    <h:link value="Back to index" outcome="/index"/>
+
+    <h2>Parts:</h2>
+    <ol>
+        <ui:repeat value="#{partsMyBatis.allParts}" var="part">
+            <li>
+<!--                <h:link value="#{car.numberplate}" outcome="car?carId=#{car.id}" />:-->
+                #{part.name}
+            </li>
+        </ui:repeat>
+    </ol>
+    <h:form>
+        <label for="part_name">Name: </label>
+        <h:inputText id="part_name" value="#{partsMyBatis.partToCreate.name}" required="true" />
+        <br/>
+        <label for="part_price">Price: </label>
+        <h:inputText id="part_price" value="#{partsMyBatis.partToCreate.price}" required="true" />
+        <br/>
+        <h:commandButton value="Add new part" action="#{partsMyBatis.createPart}" />
+    </h:form>
+    <h:link value="Back to index" outcome="/index"/>
+</h:body>
+</html>
