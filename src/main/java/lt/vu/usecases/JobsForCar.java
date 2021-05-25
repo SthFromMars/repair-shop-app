@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.transaction.RollbackException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Map;
@@ -57,7 +58,11 @@ public class JobsForCar implements Serializable {
     public String createJob() {
         jobToCreate.setCar(this.car);
         jobToCreate.setEstimate(priceCalculator.calculatePrice(jobToCreate.getEstimate()));
-        jobsDAO.persist(jobToCreate);
+        try {
+            jobsDAO.persist(jobToCreate);
+        } catch (RollbackException e) {
+            e.printStackTrace();
+        }
         return "car?faces-redirect=true&carId=" + this.car.getId();
     }
 

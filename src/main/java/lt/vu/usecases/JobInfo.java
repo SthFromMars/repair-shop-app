@@ -10,10 +10,10 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
+import javax.persistence.OptimisticLockException;
+import javax.transaction.RollbackException;
 import java.io.Serializable;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Model
 public class JobInfo implements Serializable {
@@ -34,21 +34,42 @@ public class JobInfo implements Serializable {
     }
 
     @LoggedInvocation
-    @Transactional
     public String updateJob() {
+        try {
             jobsDAO.persist(job);
-            return "job?faces-redirect=true&jobId=" + this.job.getId();
+        } catch (RollbackException e){
+            if (e.getCause() instanceof OptimisticLockException) {
+                System.out.println("OptimisticLockException");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {}
+                try {
+                    jobsDAO.persist2(job);
+                } catch (RollbackException rollbackException) {
+                    return null;
+                }
+            }
+        }
+        return "job?faces-redirect=true&jobId=" + this.job.getId();
     }
 
     @LoggedInvocation
-    @Transactional
     public String updateJob2() {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        try {
+            jobsDAO.persist2(job);
+        } catch (RollbackException e){
+            System.out.println("OptimisticLockException");
+            if (e.getCause() instanceof OptimisticLockException) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {}
+                try {
+                    jobsDAO.persist2(job);
+                } catch (RollbackException rollbackException) {
+                    return null;
+                }
             }
-            jobsDAO.persist(job);
-            return "job?faces-redirect=true&jobId=" + this.job.getId();
+        }
+        return "job?faces-redirect=true&jobId=" + this.job.getId();
     }
 }
