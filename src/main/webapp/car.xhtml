@@ -12,8 +12,7 @@
     <ol>
         <ui:repeat value="#{jobsForCar.car.jobs}" var="job">
             <li>
-<!--                <h:link value="#{job.description}" outcome="car?carId=#{job.id}" />-->
-                #{job.description}
+                <h:link value="#{job.description}: #{jobsForCar.getDisplayPrice(job.estimate)}eur" outcome="job?jobId=#{job.id}" />
             </li>
         </ui:repeat>
     </ol>

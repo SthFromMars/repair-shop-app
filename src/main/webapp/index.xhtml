@@ -6,6 +6,11 @@
 >
 <h:head/>
 <h:body>
+    <h3>#{cars.time}</h3>
+    <h:form>
+        <h:commandButton value="Print time" action="#{cars.printTime}" />
+    </h:form>
+
     <h2>Cars:</h2>
     <ol>
         <ui:repeat value="#{cars.getAllCars()}" var="car">

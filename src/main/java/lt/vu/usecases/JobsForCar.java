@@ -7,6 +7,8 @@ import lt.vu.entities.Job;
 import lt.vu.interceptors.LoggedInvocation;
 import lt.vu.persistence.CarsDAO;
 import lt.vu.persistence.JobsDAO;
+import lt.vu.utils.DisplayCalculator;
+import lt.vu.utils.PriceCalculator;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -18,6 +20,12 @@ import java.util.Map;
 
 @Model
 public class JobsForCar implements Serializable {
+
+    @Inject
+    private PriceCalculator priceCalculator;
+
+    @Inject
+    private DisplayCalculator displayCalculator;
 
     @Inject
     private CarsDAO carsDAO;
@@ -40,10 +48,15 @@ public class JobsForCar implements Serializable {
         this.car = carsDAO.findOne(carId);
     }
 
+    public int getDisplayPrice(int price){
+        return displayCalculator.calculate(price);
+    }
+
     @Transactional
     @LoggedInvocation
     public String createJob() {
         jobToCreate.setCar(this.car);
+        jobToCreate.setEstimate(priceCalculator.calculatePrice(jobToCreate.getEstimate()));
         jobsDAO.persist(jobToCreate);
         return "car?faces-redirect=true&carId=" + this.car.getId();
     }

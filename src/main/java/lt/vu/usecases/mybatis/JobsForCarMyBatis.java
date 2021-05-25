@@ -1,4 +1,4 @@
-package lt.vu.usecases;
+package lt.vu.usecases.mybatis;
 
 import lombok.Getter;
 import lombok.Setter;

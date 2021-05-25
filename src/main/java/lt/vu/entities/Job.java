@@ -31,4 +31,8 @@ public class Job implements Serializable {
             joinColumns = @JoinColumn(name = "job_id"),
             inverseJoinColumns = @JoinColumn(name = "part_id"))
     Set<Part> parts;
+
+    @Version
+    @Column(name = "VERSION")
+    private Integer version;
 }
