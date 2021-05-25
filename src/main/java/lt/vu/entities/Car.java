@@ -3,6 +3,7 @@ package lt.vu.entities;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -27,6 +28,7 @@ public class Car implements Serializable {
     @Column
     String name;
 
+    @JsonbTransient
     @OneToMany(mappedBy = "car")
     Set<Job> jobs;
 }
