@@ -23,9 +23,6 @@ public class Car implements Serializable {
     String numberplate;
 
     @Column
-    String numberplate2;
-
-    @Column
     String name;
 
     @JsonbTransient
