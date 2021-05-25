@@ -31,10 +31,6 @@ public class Cars {
     private Car carToCreate = new Car();
 
     @Getter
-    @Setter
-    private String time = "loading";
-
-    @Getter
     private List<Car> allCars;
 
     @PostConstruct
@@ -49,9 +45,6 @@ public class Cars {
         return "index?faces-redirect=true";
     }
 
-    public String refresh(){
-        return null;
-    }
 
     public void printTime(){
         timeUtils.longTime();
