@@ -58,8 +58,8 @@ public class JobInfo implements Serializable {
         try {
             jobsDAO.persist2(job);
         } catch (RollbackException e){
-            System.out.println("OptimisticLockException");
             if (e.getCause() instanceof OptimisticLockException) {
+                System.out.println("OptimisticLockException");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ignored) {}
